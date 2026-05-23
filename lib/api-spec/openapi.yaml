@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: enrollments
+    description: Course enrollment and payment operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,94 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /enrollments:
+    post:
+      operationId: createEnrollment
+      tags: [enrollments]
+      summary: Create a new enrollment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnrollmentInput"
+      responses:
+        "201":
+          description: Enrollment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enrollment"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /enrollments/{id}:
+    get:
+      operationId: getEnrollment
+      tags: [enrollments]
+      summary: Get enrollment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Enrollment found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enrollment"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /enrollments/{id}/confirm-payment:
+    post:
+      operationId: confirmPayment
+      tags: [enrollments]
+      summary: Confirm payment for an enrollment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentConfirmInput"
+      responses:
+        "200":
+          description: Payment confirmed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enrollment"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +124,62 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    EnrollmentInput:
+      type: object
+      required: [name, email, phone, course]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 10
+        course:
+          type: string
+          minLength: 2
+
+    PaymentConfirmInput:
+      type: object
+      required: [utrNumber]
+      properties:
+        utrNumber:
+          type: string
+          minLength: 4
+
+    Enrollment:
+      type: object
+      required: [id, name, email, phone, course, status, baseAmount, gstAmount, totalAmount, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        course:
+          type: string
+        status:
+          type: string
+        baseAmount:
+          type: integer
+        gstAmount:
+          type: integer
+        totalAmount:
+          type: integer
+        utrNumber:
+          type: ["string", "null"]
+        createdAt:
+          type: string

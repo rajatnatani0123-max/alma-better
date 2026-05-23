@@ -5,28 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-export interface ErrorResponse {
-  error: string;
-}
-
-export interface EnrollmentInput {
-  /** @minLength 2 */
-  name: string;
-  email: string;
-  /** @minLength 10 */
-  phone: string;
-  /** @minLength 2 */
-  course: string;
-}
-
-export interface PaymentConfirmInput {
-  /** @minLength 4 */
-  utrNumber: string;
-}
 
 export interface Enrollment {
   id: number;
@@ -42,4 +20,3 @@ export interface Enrollment {
   utrNumber?: string | null;
   createdAt: string;
 }
-

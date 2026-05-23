@@ -1,18 +1,21 @@
 import React from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { ChevronRight, Star, ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Users, Target, BookOpen, Briefcase, Zap, HelpCircle } from "lucide-react";
+import { ChevronRight, ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Users, Target, BookOpen, Briefcase, Zap } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
+import type { Variants } from "framer-motion";
+
 // Animation Variants
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -31,6 +34,8 @@ const CoursesList = [
 ];
 
 export default function Home() {
+  const [, setLocation] = useLocation();
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans overflow-x-hidden">
       
@@ -50,8 +55,8 @@ export default function Home() {
             <a href="#alumni" className="hover:text-primary transition-colors">Alumni</a>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="hidden sm:inline-flex">Log in</Button>
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 shadow-lg shadow-primary/20">
+            <Button variant="ghost" className="hidden sm:inline-flex" data-testid="button-login" onClick={() => setLocation("/enroll")}>Log in</Button>
+            <Button data-testid="button-apply-nav" onClick={() => setLocation("/enroll")} className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 shadow-lg shadow-primary/20">
               Apply Now
             </Button>
           </div>
@@ -92,10 +97,10 @@ export default function Home() {
                 </motion.p>
                 
                 <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Button size="lg" className="h-14 px-8 text-lg rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/25">
+                  <Button size="lg" data-testid="button-explore-programs" onClick={() => setLocation("/enroll")} className="h-14 px-8 text-lg rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/25">
                     Explore Programs <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
-                  <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full border-2 border-secondary/20 text-secondary hover:bg-secondary/5">
+                  <Button size="lg" variant="outline" data-testid="button-free-trial" onClick={() => setLocation("/enroll")} className="h-14 px-8 text-lg rounded-full border-2 border-secondary/20 text-secondary hover:bg-secondary/5">
                     Take a Free Trial
                   </Button>
                 </motion.div>
@@ -178,7 +183,7 @@ export default function Home() {
                       <div className="flex items-center text-secondary-foreground/60 text-sm mb-6 font-medium">
                         <BookOpen className="w-4 h-4 mr-2" /> {course.duration}
                       </div>
-                      <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10 p-0 h-auto font-semibold">
+                      <Button variant="ghost" data-testid={`button-view-curriculum-${i}`} onClick={() => setLocation("/enroll")} className="text-primary hover:text-primary hover:bg-primary/10 p-0 h-auto font-semibold">
                         View Curriculum <ChevronRight className="ml-1 w-4 h-4" />
                       </Button>
                     </CardContent>
@@ -262,8 +267,8 @@ export default function Home() {
                 </ul>
                 
                 <div className="mt-10 pt-8 border-t border-white/10">
-                  <Button className="w-full bg-primary hover:bg-primary/90 text-white h-14 text-lg rounded-xl">
-                    View Detailed Policy
+                  <Button data-testid="button-view-policy" onClick={() => setLocation("/enroll")} className="w-full bg-primary hover:bg-primary/90 text-white h-14 text-lg rounded-xl">
+                    Apply Now — Guarantee Included
                   </Button>
                 </div>
               </motion.div>
@@ -369,7 +374,7 @@ export default function Home() {
             <p className="text-xl text-secondary-foreground/80 mb-10">
               Join thousands of students who have transformed their careers with AlmaBetter.
             </p>
-            <Button size="lg" className="h-16 px-10 text-xl rounded-full bg-primary hover:bg-primary/90 text-white shadow-2xl shadow-primary/30">
+            <Button size="lg" data-testid="button-start-application" onClick={() => setLocation("/enroll")} className="h-16 px-10 text-xl rounded-full bg-primary hover:bg-primary/90 text-white shadow-2xl shadow-primary/30">
               Start Your Application
             </Button>
           </div>
