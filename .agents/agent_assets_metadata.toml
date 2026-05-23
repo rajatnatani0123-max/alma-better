@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "ZIakQr74hG79BGJ2eyzHT"
+uri = "file://alma-better-codebase.tar.gz"
+type = "unspecified"
+title = "Alma Better — Full Codebase"
