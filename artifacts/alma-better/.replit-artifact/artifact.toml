@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Alma Better"
+version = "1.0.0"
+id = "artifacts/alma-better"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18842
+
+[services.development]
+run = "pnpm --filter @workspace/alma-better run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/alma-better", "run", "build" ]
+publicDir = "artifacts/alma-better/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18842"
+BASE_PATH = "/"
