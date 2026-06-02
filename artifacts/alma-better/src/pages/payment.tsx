@@ -285,35 +285,22 @@ export default function Payment() {
                   After scanning and paying, enter the <span className="font-semibold">UTR number</span> or transaction reference from your UPI app.
                 </p>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="utrNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>UTR / Transaction Reference</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="e.g. 432156789012"
-                              data-testid="input-utr"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button
-  type="button"
-  onClick={openRazorpay}
-  className="w-full h-14 text-lg font-bold rounded-2xl"
->
-  Pay ₹{creditCardPrice.toLocaleString()}
-</Button>
-                    {confirmPayment.isError && (
-                      <p className="text-red-500 text-sm text-center">Something went wrong. Please try again.</p>
-                    )}
-                  </form>
+                  <div className="space-y-4">
+
+  <Input
+    placeholder="Enter Card Holder Name"
+    className="h-12"
+  />
+
+  <Button
+    type="button"
+    onClick={openRazorpay}
+    className="w-full h-14 text-lg font-bold rounded-2xl bg-primary hover:bg-primary/90"
+  >
+    Pay ₹{creditCardPrice.toLocaleString()}
+  </Button>
+
+</div></form>
                 </Form>
               </div>
             </div>
