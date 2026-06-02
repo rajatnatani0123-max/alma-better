@@ -278,35 +278,66 @@ export default function Payment() {
                 </div>
               </div>
 
+              
               {/* UTR Confirmation Form */}
-              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
-                <h3 className="font-bold text-secondary text-lg mb-2">Confirm Your Payment</h3>
-                <p className="text-muted-foreground text-sm mb-5">
-                  After scanning and paying, enter the <span className="font-semibold">UTR number</span> or transaction reference from your UPI app.
-                </p>
-                <Form {...form}>
-                  <div className="space-y-4">
+<div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+  <h3 className="font-bold text-secondary text-lg mb-2">
+    Confirm Your Payment
+  </h3>
 
-  <Input
-    placeholder="Enter Card Holder Name"
-    className="h-12"
-  />
+  <p className="text-muted-foreground text-sm mb-5">
+    After scanning and paying, enter the{" "}
+    <span className="font-semibold">UTR number</span> or transaction
+    reference from your UPI app.
+  </p>
 
-  <Button
-    type="button"
-    onClick={openRazorpay}
-    className="w-full h-14 text-lg font-bold rounded-2xl bg-primary hover:bg-primary/90"
-  >
-    Pay ₹{creditCardPrice.toLocaleString()}
-  </Button>
+  <Form {...form}>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="space-y-4"
+    >
 
-</div></form>
-                </Form>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
+      <Input
+        placeholder="Enter Card Holder Name"
+        className="h-12"
+      />
+
+      <FormField
+        control={form.control}
+        name="utrNumber"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>UTR / Transaction ID</FormLabel>
+
+            <FormControl>
+              <Input
+                placeholder="Enter UTR Number"
+                className="h-12"
+                {...field}
+              />
+            </FormControl>
+
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <Button
+        type="button"
+        onClick={openRazorpay}
+        className="w-full h-14 text-lg font-bold rounded-2xl bg-primary hover:bg-primary/90"
+      >
+        Pay ₹{creditCardPrice.toLocaleString("en-IN")}
+      </Button>
+
+      <Button
+        type="submit"
+        variant="outline"
+        className="w-full h-12 rounded-2xl"
+      >
+        Submit UTR
+      </Button>
+
+    </form>
+  </Form>
+</div>
