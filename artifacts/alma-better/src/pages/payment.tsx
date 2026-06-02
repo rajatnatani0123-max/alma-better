@@ -66,6 +66,36 @@ export default function Payment() {
   }
 
   const creditCardPrice = Math.round(enrollment.totalAmount * 0.95);
+  function openRazorpay() {
+
+  const options = {
+
+    key: "rzp_test_SwkhvnJtl5e00t",
+
+    amount: creditCardPrice * 100,
+
+    currency: "INR",
+
+    name: "AlmaBetter",
+
+    description: enrollment.course,
+
+    handler: function (response: any) {
+
+      console.log(response);
+
+      setPaid(true);
+    },
+
+    theme: {
+      color: "#7C3AED"
+    }
+  };
+
+  const razorpay = new (window as any).Razorpay(options);
+
+  razorpay.open();
+}
 
   if (paid) {
     return (
