@@ -385,4 +385,5 @@ export default function Payment() {
   );
 }
 ```
+export default Payment;
 
