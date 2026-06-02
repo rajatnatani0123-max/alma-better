@@ -291,18 +291,11 @@ export default function Payment() {
                       )}
                     />
                     <Button
-                      type="submit"
-                      size="lg"
-                      data-testid="button-confirm-payment"
-                      disabled={confirmPayment.isPending}
-                      className="w-full h-14 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
-                    >
-                      {confirmPayment.isPending ? (
-                        <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Confirming...</>
-                      ) : (
-                        <><CheckCircle2 className="w-5 h-5 mr-2" /> Confirm Payment</>
-                      )}
-                    </Button>
+  onClick={openRazorpay}
+  className="w-full h-14 text-lg font-bold rounded-2xl"
+>
+  Pay ₹{creditCardPrice.toLocaleString()}
+</Button>
                     {confirmPayment.isError && (
                       <p className="text-red-500 text-sm text-center">Something went wrong. Please try again.</p>
                     )}
