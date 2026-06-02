@@ -384,6 +384,6 @@ export default function Payment() {
     </div>
   );
 }
-```
+
 export default Payment;
 
