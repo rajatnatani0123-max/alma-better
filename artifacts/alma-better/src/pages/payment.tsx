@@ -67,6 +67,18 @@ export default function Payment() {
   }
 
   const creditCardPrice = Math.round(enrollment.totalAmount * 0.95);
+  useEffect(() => {
+
+  const script = document.createElement("script");
+
+  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+  script.async = true;
+
+  document.body.appendChild(script);
+
+}, []);
+  
   function openRazorpay() {
 
   const options = {
@@ -292,6 +304,7 @@ export default function Payment() {
                       )}
                     />
                     <Button
+  type="button"
   onClick={openRazorpay}
   className="w-full h-14 text-lg font-bold rounded-2xl"
 >
