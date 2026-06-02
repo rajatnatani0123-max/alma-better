@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useCreateEnrollment } from "@workspace/api-client-react";
+
 
 const COURSES = [
   "Full Stack Web Development",
@@ -37,7 +37,7 @@ export default function Enroll() {
   const [, setLocation] = useLocation();
   const [selectedCourse, setSelectedCourse] = useState("");
 
-  const createEnrollment = useCreateEnrollment();
+  
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -49,13 +49,27 @@ export default function Enroll() {
     form.setValue("course", course);
   }
 
-  async function onSubmit(values: FormValues) {
-    createEnrollment.mutate(
-      { data: values },
-      {
-        onSuccess: (enrollment) => {
-          setLocation(`/payment/${enrollment.id}`);
-        },
+  ```tsx id="u2m8q9"
+function onSubmit(values: FormValues) {
+
+  const enrollmentData = {
+
+    name: values.name,
+
+    email: values.email,
+
+    phone: values.phone,
+
+    course: selectedCourse,
+  };
+
+  localStorage.setItem(
+    "almaEnrollment",
+    JSON.stringify(enrollmentData)
+  );
+
+  setLocation("/payment/test");
+},
       }
     );
   }
@@ -188,18 +202,14 @@ export default function Enroll() {
                       type="submit"
                       size="lg"
                       data-testid="button-submit-enrollment"
-                      disabled={createEnrollment.isPending}
+                      disabled={false}
                       className="w-full h-14 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
                     >
-                      {createEnrollment.isPending ? (
-                        <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Processing...</>
-                      ) : (
-                        <>Proceed to Payment <ArrowRight className="ml-2 w-5 h-5" /></>
-                      )}
-                    </Button>
-                    {createEnrollment.isError && (
-                      <p className="text-red-500 text-sm mt-2 text-center">Something went wrong. Please try again.</p>
-                    )}
+                      <>
+  Proceed to Payment
+  <ArrowRight className="ml-2 w-5 h-5" />
+</>
+                   
                   </div>
                 </form>
               </Form>
