@@ -12,12 +12,16 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 
 import jsPDF from "jspdf";
-
 import html2canvas from "html2canvas";
+
+import yesbank from "@/assets/yesbank.png";
+import hdfc from "@/assets/hdfc.png";
+import icici from "@/assets/icici.png";
+import sbi from "@/assets/sbi.png";
+import upi from "@/assets/upi.png";
 
 export default function Payment() {
 
@@ -72,7 +76,7 @@ export default function Payment() {
   const utr =
     Math.floor(
       100000000000 +
-        Math.random() * 900000000000
+      Math.random() * 900000000000
     ).toString();
 
   function payNow() {
@@ -123,7 +127,7 @@ export default function Payment() {
 
   }
 
-  // PROCESSING
+  // PROCESSING SCREEN
   if (processing) {
 
     return (
@@ -145,12 +149,6 @@ export default function Payment() {
           <p className="text-gray-500">
             Please wait while we securely process your payment...
           </p>
-
-          <div className="mt-6 bg-gray-100 rounded-full h-3 overflow-hidden">
-
-            <div className="bg-orange-500 h-full animate-pulse w-full"></div>
-
-          </div>
 
         </motion.div>
 
@@ -357,7 +355,7 @@ export default function Payment() {
 
   }
 
-  // OTP PAGE
+  // OTP SCREEN
   if (showOtp) {
 
     return (
@@ -395,7 +393,7 @@ export default function Payment() {
           </div>
 
           <Input
-            placeholder="••••••"
+            placeholder="Enter OTP"
             value={otp}
             onChange={(e) =>
               setOtp(e.target.value)
@@ -424,6 +422,7 @@ export default function Payment() {
 
     <div className="min-h-screen bg-[#f5f5f5]">
 
+      {/* NAVBAR */}
       <nav className="sticky top-0 z-50 w-full bg-white border-b">
 
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -448,9 +447,10 @@ export default function Payment() {
 
         <div className="grid lg:grid-cols-2 gap-8">
 
-          {/* LEFT */}
+          {/* LEFT SIDE */}
           <div className="space-y-5">
 
+            {/* OFFER BOX */}
             <div className="flex items-start gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
 
               <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
@@ -497,74 +497,94 @@ export default function Payment() {
                 Available Bank Offers
               </h3>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 gap-4">
 
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                {/* YES BANK */}
+                <div className="border rounded-2xl p-5 min-h-[120px] flex items-center gap-4">
+
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/7/77/Yes_Bank_SVG_Logo.svg"
-                    className="h-8"
+                    src={yesbank}
+                    className="h-10 object-contain"
                   />
 
                   <div>
-                    <p className="font-semibold text-sm">
+
+                    <p className="font-semibold">
                       Yes Bank
                     </p>
 
-                    <p className="text-xs text-green-600">
+                    <p className="text-sm text-green-600">
                       5% Instant Discount
                     </p>
+
                   </div>
+
                 </div>
 
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                {/* HDFC */}
+                <div className="border rounded-2xl p-5 min-h-[120px] flex items-center gap-4">
+
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg"
-                    className="h-8"
+                    src={hdfc}
+                    className="h-10 object-contain"
                   />
 
                   <div>
-                    <p className="font-semibold text-sm">
+
+                    <p className="font-semibold">
                       HDFC Bank
                     </p>
 
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-gray-500">
                       No Cost EMI
                     </p>
+
                   </div>
+
                 </div>
 
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                {/* ICICI */}
+                <div className="border rounded-2xl p-5 min-h-[120px] flex items-center gap-4">
+
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg"
-                    className="h-8"
+                    src={icici}
+                    className="h-10 object-contain"
                   />
 
                   <div>
-                    <p className="font-semibold text-sm">
+
+                    <p className="font-semibold">
                       ICICI Bank
                     </p>
 
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-gray-500">
                       Cashback Offers
                     </p>
+
                   </div>
+
                 </div>
 
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                {/* SBI */}
+                <div className="border rounded-2xl p-5 min-h-[120px] flex items-center gap-4">
+
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg"
-                    className="h-8"
+                    src={sbi}
+                    className="h-10 object-contain"
                   />
 
                   <div>
-                    <p className="font-semibold text-sm">
+
+                    <p className="font-semibold">
                       SBI Cards
                     </p>
 
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-gray-500">
                       Reward Points
                     </p>
+
                   </div>
+
                 </div>
 
               </div>
@@ -573,7 +593,7 @@ export default function Payment() {
 
           </div>
 
-          {/* RIGHT */}
+          {/* RIGHT SIDE */}
           <div className="bg-white rounded-3xl border shadow-xl p-8">
 
             <h2 className="text-2xl font-bold mb-2">
@@ -587,6 +607,7 @@ export default function Payment() {
             {/* PAYMENT TABS */}
             <div className="grid grid-cols-4 gap-3 mb-6">
 
+              {/* CARD */}
               <button
                 onClick={() =>
                   setPaymentMethod("cards")
@@ -606,6 +627,7 @@ export default function Payment() {
 
               </button>
 
+              {/* UPI */}
               <button
                 onClick={() =>
                   setPaymentMethod("upi")
@@ -618,8 +640,8 @@ export default function Payment() {
               >
 
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/2560px-UPI-Logo-vector.svg.png"
-                  className="h-6 object-contain mb-2"
+                  src={upi}
+                  className="h-7 object-contain mb-2"
                 />
 
                 <p className="font-semibold text-sm">
@@ -628,6 +650,7 @@ export default function Payment() {
 
               </button>
 
+              {/* CRED */}
               <button
                 onClick={() =>
                   setPaymentMethod("cred")
@@ -639,10 +662,9 @@ export default function Payment() {
                 }`}
               >
 
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/8/89/Cred_logo.png"
-                  className="h-6 object-contain mb-2"
-                />
+                <div className="text-2xl mb-2">
+                  💳
+                </div>
 
                 <p className="font-semibold text-sm">
                   CRED
@@ -650,6 +672,7 @@ export default function Payment() {
 
               </button>
 
+              {/* BANKING */}
               <button
                 onClick={() =>
                   setPaymentMethod("banking")
@@ -661,10 +684,9 @@ export default function Payment() {
                 }`}
               >
 
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png"
-                  className="h-6 object-contain mb-2"
-                />
+                <div className="text-2xl mb-2">
+                  🏦
+                </div>
 
                 <p className="font-semibold text-sm">
                   Banking
@@ -674,7 +696,7 @@ export default function Payment() {
 
             </div>
 
-            {/* UPI */}
+            {/* UPI SECTION */}
             {paymentMethod === "upi" && (
 
               <div className="space-y-4 mb-6">
@@ -705,17 +727,16 @@ export default function Payment() {
 
             )}
 
-            {/* CRED */}
+            {/* CRED SECTION */}
             {paymentMethod === "cred" && (
 
               <div className="border rounded-3xl p-6 mb-6">
 
                 <div className="flex items-center gap-3 mb-4">
 
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/Cred_logo.png"
-                    className="h-8"
-                  />
+                  <div className="text-4xl">
+                    💳
+                  </div>
 
                   <div>
 
