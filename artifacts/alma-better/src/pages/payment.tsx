@@ -409,22 +409,16 @@ export default function Payment() {
   </Button>
 
   <p className="text-xs text-center text-muted-foreground">
-    256-bit SSL encrypted payment powered by Razorpay
-  </p>
+  256-bit SSL encrypted payment powered by Razorpay
+</p>
 
 </div>
-```
+</div>
+</div>
+</motion.div>
+</div>
+</div>
+);
 }
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
 
 
