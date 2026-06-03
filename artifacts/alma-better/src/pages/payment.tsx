@@ -45,8 +45,7 @@ export default function Payment() {
     const options = {
       key: "rzp_test_SwkhvnJtl5e00t",
 
-      amount: creditCardPrice * 100,
-
+      amount: 49900,
       currency: "INR",
 
       name: "AlmaBetter",
