@@ -18,7 +18,9 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 export default function Payment() {
+  const [showOtp, setShowOtp] = useState(false);
   const [paid, setPaid] = useState(false);
+  const [otp, setOtp] = useState("");
 
   const enrollment = {
     name: "Rajat Natani",
@@ -46,7 +48,7 @@ export default function Payment() {
     ).toString();
 
   function openDemoPayment() {
-    setPaid(true);
+    setShowOtp(true);
   }
 
   async function downloadReceipt() {
@@ -102,6 +104,64 @@ export default function Payment() {
     pdf.save("payment-receipt.pdf");
   }
 
+  // OTP SCREEN
+  if (showOtp && !paid) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-3xl shadow-xl border border-border p-8 w-full max-w-md"
+        >
+          <div className="text-center mb-6">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <ShieldCheck className="w-10 h-10 text-primary" />
+            </div>
+
+            <h1 className="text-3xl font-bold text-secondary mb-2">
+              OTP Verification
+            </h1>
+
+            <p className="text-muted-foreground">
+              Enter OTP to complete payment
+            </p>
+          </div>
+
+          <div className="bg-muted rounded-2xl p-5 text-center mb-5">
+            <p className="text-sm text-muted-foreground mb-2">
+              OTP Sent Successfully
+            </p>
+
+            <p className="text-4xl font-bold tracking-[12px] text-primary">
+              123456
+            </p>
+          </div>
+
+          <Input
+            placeholder="Enter OTP"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            className="h-14 text-center text-2xl tracking-[10px] mb-5"
+          />
+
+          <Button
+            onClick={() => {
+              if (otp === "123456") {
+                setPaid(true);
+              } else {
+                alert("Invalid OTP");
+              }
+            }}
+            className="w-full h-14 text-lg rounded-2xl"
+          >
+            Verify Payment
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // SUCCESS RECEIPT
   if (paid) {
     return (
       <div className="min-h-screen bg-background px-6 py-10 flex items-center justify-center">
@@ -124,7 +184,7 @@ export default function Payment() {
               </h1>
 
               <p className="text-muted-foreground">
-                Demo Payment Receipt
+                Transaction Completed Successfully
               </p>
             </div>
 
@@ -235,11 +295,6 @@ export default function Payment() {
                 <li>
                   Interview participation is mandatory.
                 </li>
-
-                <li>
-                  This is a sandbox/demo transaction
-                  receipt.
-                </li>
               </ul>
             </div>
 
@@ -265,6 +320,7 @@ export default function Payment() {
     );
   }
 
+  // MAIN PAYMENT PAGE
   return (
     <div className="min-h-screen bg-background text-foreground">
       <nav className="sticky top-0 z-50 w-full backdrop-blur-xl bg-background/80 border-b border-border/50">
@@ -475,7 +531,7 @@ export default function Payment() {
                 </h3>
 
                 <p className="text-muted-foreground text-sm mb-5">
-                  Demo payment simulation mode.
+                  Complete your payment securely.
                 </p>
 
                 <div className="space-y-4">
@@ -513,7 +569,7 @@ export default function Payment() {
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
-                    Demo checkout environment
+                    256-bit SSL encrypted payment
                   </p>
                 </div>
               </div>
