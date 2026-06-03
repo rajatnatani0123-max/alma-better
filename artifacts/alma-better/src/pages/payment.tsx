@@ -45,7 +45,16 @@ export default function Payment() {
   const [paid, setPaid] =
     useState(false);
 
-  const amount = 84549;
+  const [isVerifiedCard, setIsVerifiedCard] =
+    useState(false);
+
+  const originalAmount = 88999;
+
+  const discountedAmount = 84549;
+
+  const amount = isVerifiedCard
+    ? discountedAmount
+    : originalAmount;
 
   const transactionId =
     "pay_" +
@@ -206,7 +215,7 @@ export default function Payment() {
 
                 <span>
                   ₹
-                  {amount.toLocaleString(
+                  {discountedAmount.toLocaleString(
                     "en-IN"
                   )}
                 </span>
@@ -319,7 +328,7 @@ export default function Payment() {
     );
   }
 
-  // MAIN PAYMENT PAGE
+  // MAIN PAGE
   return (
     <div className="min-h-screen bg-[#f5f5f5]">
       <nav className="sticky top-0 z-50 w-full bg-white border-b">
@@ -335,10 +344,10 @@ export default function Payment() {
         </div>
       </nav>
 
-      <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid lg:grid-cols-2 gap-8">
 
-          {/* LEFT */}
+          {/* LEFT SIDE */}
           <div className="space-y-5">
 
             <div className="flex items-start gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
@@ -358,9 +367,8 @@ export default function Payment() {
                 </div>
 
                 <p className="text-white/90 text-sm">
-                  Pay using your Yes Bank
-                  Credit Card and get instant
-                  5% cashback.
+                  Pay using eligible cards
+                  and get instant cashback.
                 </p>
 
                 <div className="mt-3 font-bold text-3xl">
@@ -372,27 +380,70 @@ export default function Payment() {
               </div>
             </div>
 
+            {/* BANK OFFERS */}
             <div className="bg-white rounded-3xl border p-6">
+
+              <h3 className="font-bold text-xl mb-4">
+                Available Bank Offers
+              </h3>
+
+              <div className="grid grid-cols-2 gap-3 text-sm">
+
+                <div className="border rounded-xl p-3">
+                  Yes Bank - 5% OFF
+                </div>
+
+                <div className="border rounded-xl p-3">
+                  HDFC Bank EMI
+                </div>
+
+                <div className="border rounded-xl p-3">
+                  ICICI Cashback
+                </div>
+
+                <div className="border rounded-xl p-3">
+                  SBI Credit Cards
+                </div>
+
+                <div className="border rounded-xl p-3">
+                  Axis Rewards
+                </div>
+
+                <div className="border rounded-xl p-3">
+                  Kotak Instant Offer
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* ORDER SUMMARY */}
+            <div className="bg-white rounded-3xl border p-6">
+
               <h3 className="font-bold text-xl mb-4">
                 Order Summary
               </h3>
 
               <div className="space-y-3">
+
                 <div className="flex justify-between">
                   <span>Course Fee</span>
 
                   <span>₹88,999</span>
                 </div>
 
-                <div className="flex justify-between text-green-700">
-                  <span>
-                    Yes Bank Discount
-                  </span>
+                {isVerifiedCard && (
+                  <div className="flex justify-between text-green-700">
+                    <span>
+                      Yes Bank Instant Discount
+                    </span>
 
-                  <span>- ₹4,450</span>
-                </div>
+                    <span>- ₹4,450</span>
+                  </div>
+                )}
 
                 <div className="border-t pt-3 flex justify-between font-bold text-xl">
+
                   <span>Total Payable</span>
 
                   <span>
@@ -401,22 +452,54 @@ export default function Payment() {
                       "en-IN"
                     )}
                   </span>
+
                 </div>
+
               </div>
+
             </div>
 
           </div>
 
-          {/* RIGHT */}
+          {/* RIGHT SIDE */}
           <div className="bg-white rounded-3xl border shadow-xl p-8">
 
             <h2 className="text-2xl font-bold mb-2">
-              Card Payment
+              Payment Options
             </h2>
 
             <p className="text-gray-500 mb-6">
-              Complete your payment securely
+              Choose your preferred payment method
             </p>
+
+            {/* PAYMENT TABS */}
+            <div className="grid grid-cols-4 gap-3 mb-6">
+
+              <div className="border-2 border-orange-500 bg-orange-50 rounded-2xl p-3 text-center">
+                <p className="font-semibold text-sm">
+                  Cards
+                </p>
+              </div>
+
+              <div className="border rounded-2xl p-3 text-center">
+                <p className="font-semibold text-sm">
+                  UPI
+                </p>
+              </div>
+
+              <div className="border rounded-2xl p-3 text-center">
+                <p className="font-semibold text-sm">
+                  EMI
+                </p>
+              </div>
+
+              <div className="border rounded-2xl p-3 text-center">
+                <p className="font-semibold text-sm">
+                  Banking
+                </p>
+              </div>
+
+            </div>
 
             <div className="space-y-4">
 
@@ -434,13 +517,46 @@ export default function Payment() {
               <Input
                 placeholder="Card Number"
                 value={cardNumber}
-                onChange={(e) =>
-                  setCardNumber(
+                onChange={(e) => {
+
+                  const value =
                     e.target.value
-                  )
-                }
+                      .replace(/\D/g, "")
+                      .slice(0, 16);
+
+                  setCardNumber(value);
+
+                  if (value.length === 16) {
+                    setIsVerifiedCard(true);
+                  } else {
+                    setIsVerifiedCard(false);
+                  }
+
+                }}
                 className="h-14"
               />
+
+              {isVerifiedCard && (
+                <div className="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+
+                  <div>
+
+                    <p className="font-semibold text-green-700">
+                      Yes Bank Card Verified
+                    </p>
+
+                    <p className="text-sm text-green-600">
+                      5% Instant Discount Applied
+                    </p>
+
+                  </div>
+
+                  <div className="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    VERIFIED
+                  </div>
+
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-4">
 
@@ -492,11 +608,13 @@ export default function Payment() {
               </Button>
 
               <div className="flex items-center justify-center gap-2 mt-5 text-sm text-green-700">
+
                 <ShieldCheck className="w-4 h-4" />
 
                 <span>
                   256-bit SSL encrypted payment
                 </span>
+
               </div>
 
             </div>
