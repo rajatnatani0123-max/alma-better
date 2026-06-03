@@ -7,6 +7,8 @@ import {
   CheckCircle2,
   Download,
   ShieldCheck,
+  CreditCard,
+  Tag,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,16 +20,30 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 export default function Payment() {
-  const [phone, setPhone] = useState("");
+  const [cardName, setCardName] =
+    useState("");
+
+  const [cardNumber, setCardNumber] =
+    useState("");
+
+  const [expiry, setExpiry] =
+    useState("");
+
+  const [cvv, setCvv] = useState("");
+
+  const [phone, setPhone] =
+    useState("");
 
   const [otp, setOtp] = useState("");
 
-  const [showOtp, setShowOtp] = useState(false);
+  const [showOtp, setShowOtp] =
+    useState(false);
 
   const [processing, setProcessing] =
     useState(false);
 
-  const [paid, setPaid] = useState(false);
+  const [paid, setPaid] =
+    useState(false);
 
   const amount = 84549;
 
@@ -40,31 +56,22 @@ export default function Payment() {
 
   const utr =
     Math.floor(
-      100000000000 + Math.random() * 900000000000
+      100000000000 +
+        Math.random() * 900000000000
     ).toString();
 
-  function sendOtp() {
-    if (phone.length < 10) {
-      alert("Enter valid mobile number");
-
-      return;
-    }
-
+  function payNow() {
     setShowOtp(true);
   }
 
   function verifyOtp() {
-    if (otp.length === 6) {
-      setProcessing(true);
+    setProcessing(true);
 
-      setTimeout(() => {
-        setProcessing(false);
+    setTimeout(() => {
+      setProcessing(false);
 
-        setPaid(true);
-      }, 3500);
-    } else {
-      alert("Enter valid OTP");
-    }
+      setPaid(true);
+    }, 3500);
   }
 
   async function downloadReceipt() {
@@ -74,7 +81,8 @@ export default function Payment() {
 
     const canvas = await html2canvas(input);
 
-    const imgData = canvas.toDataURL("image/png");
+    const imgData =
+      canvas.toDataURL("image/png");
 
     const pdf = new jsPDF();
 
@@ -123,8 +131,14 @@ export default function Payment() {
     return (
       <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-6 py-10">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{
+            opacity: 0,
+            scale: 0.9,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
           className="w-full max-w-2xl"
         >
           <div
@@ -151,7 +165,7 @@ export default function Payment() {
                 <span>Student Name</span>
 
                 <span className="font-semibold">
-                  Rajat Natani
+                  {cardName || "Rajat Natani"}
                 </span>
               </div>
 
@@ -161,6 +175,15 @@ export default function Payment() {
                 <span className="font-semibold text-right max-w-[60%]">
                   AlmaBetter Placement
                   Guarantee Program
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Card Used</span>
+
+                <span>
+                  **** **** ****{" "}
+                  {cardNumber.slice(-4)}
                 </span>
               </div>
 
@@ -192,7 +215,9 @@ export default function Payment() {
 
             <div className="border rounded-2xl p-6 mb-6 space-y-4">
               <div className="flex justify-between">
-                <span>Transaction ID</span>
+                <span>
+                  Transaction ID
+                </span>
 
                 <span>
                   {transactionId}
@@ -206,7 +231,9 @@ export default function Payment() {
               </div>
 
               <div className="flex justify-between">
-                <span>Payment Method</span>
+                <span>
+                  Payment Method
+                </span>
 
                 <span>
                   Yes Bank Credit Card
@@ -230,41 +257,6 @@ export default function Payment() {
               </div>
             </div>
 
-            <div className="border rounded-2xl p-6 mb-6">
-              <h3 className="font-bold text-lg mb-4">
-                Course Conditions
-              </h3>
-
-              <ul className="list-disc pl-5 text-sm text-gray-600 space-y-2">
-                <li>
-                  Placement guarantee
-                  applicable after successful
-                  course completion.
-                </li>
-
-                <li>
-                  Student must complete all
-                  assignments and
-                  assessments.
-                </li>
-
-                <li>
-                  Attendance criteria
-                  mandatory.
-                </li>
-
-                <li>
-                  Interview participation
-                  compulsory.
-                </li>
-
-                <li>
-                  Refund subject to company
-                  policy.
-                </li>
-              </ul>
-            </div>
-
             <Button
               onClick={downloadReceipt}
               className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
@@ -283,8 +275,14 @@ export default function Payment() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] px-6">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{
+            opacity: 0,
+            scale: 0.9,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
           className="bg-white rounded-3xl shadow-xl border p-8 w-full max-w-md"
         >
           <div className="text-center mb-6">
@@ -321,7 +319,7 @@ export default function Payment() {
     );
   }
 
-  // MAIN PAGE
+  // MAIN PAYMENT PAGE
   return (
     <div className="min-h-screen bg-[#f5f5f5]">
       <nav className="sticky top-0 z-50 w-full bg-white border-b">
@@ -337,77 +335,175 @@ export default function Payment() {
         </div>
       </nav>
 
-      <div className="max-w-xl mx-auto px-6 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-3xl shadow-xl p-8 border"
-        >
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-3 text-[#111827]">
-              Complete Payment
-            </h1>
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        <div className="grid lg:grid-cols-2 gap-8">
 
-            <p className="text-gray-500">
-              Secure your enrollment now
-            </p>
+          {/* LEFT */}
+          <div className="space-y-5">
+
+            <div className="flex items-start gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                <Tag className="w-6 h-6 text-white" />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-bold text-lg">
+                    Yes Bank Offer
+                  </span>
+
+                  <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                    5% OFF
+                  </span>
+                </div>
+
+                <p className="text-white/90 text-sm">
+                  Pay using your Yes Bank
+                  Credit Card and get instant
+                  5% cashback.
+                </p>
+
+                <div className="mt-3 font-bold text-3xl">
+                  ₹
+                  {amount.toLocaleString(
+                    "en-IN"
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-3xl border p-6">
+              <h3 className="font-bold text-xl mb-4">
+                Order Summary
+              </h3>
+
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span>Course Fee</span>
+
+                  <span>₹88,999</span>
+                </div>
+
+                <div className="flex justify-between text-green-700">
+                  <span>
+                    Yes Bank Discount
+                  </span>
+
+                  <span>- ₹4,450</span>
+                </div>
+
+                <div className="border-t pt-3 flex justify-between font-bold text-xl">
+                  <span>Total Payable</span>
+
+                  <span>
+                    ₹
+                    {amount.toLocaleString(
+                      "en-IN"
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <div className="rounded-2xl bg-green-50 border border-green-200 p-5 mb-6">
-            <div className="flex justify-between mb-2">
-              <span>Original Price</span>
+          {/* RIGHT */}
+          <div className="bg-white rounded-3xl border shadow-xl p-8">
 
-              <span>₹88,999</span>
-            </div>
+            <h2 className="text-2xl font-bold mb-2">
+              Card Payment
+            </h2>
 
-            <div className="flex justify-between text-green-700 mb-2">
-              <span>
-                Yes Bank Discount
-              </span>
+            <p className="text-gray-500 mb-6">
+              Complete your payment securely
+            </p>
 
-              <span>- ₹4,450</span>
-            </div>
+            <div className="space-y-4">
 
-            <div className="border-t border-green-200 pt-3 flex justify-between font-bold text-lg">
-              <span>Total Payable</span>
+              <Input
+                placeholder="Card Holder Name"
+                value={cardName}
+                onChange={(e) =>
+                  setCardName(
+                    e.target.value
+                  )
+                }
+                className="h-14"
+              />
 
-              <span>
-                ₹
+              <Input
+                placeholder="Card Number"
+                value={cardNumber}
+                onChange={(e) =>
+                  setCardNumber(
+                    e.target.value
+                  )
+                }
+                className="h-14"
+              />
+
+              <div className="grid grid-cols-2 gap-4">
+
+                <Input
+                  placeholder="MM/YY"
+                  value={expiry}
+                  onChange={(e) =>
+                    setExpiry(
+                      e.target.value
+                    )
+                  }
+                  className="h-14"
+                />
+
+                <Input
+                  placeholder="CVV"
+                  value={cvv}
+                  onChange={(e) =>
+                    setCvv(
+                      e.target.value
+                    )
+                  }
+                  className="h-14"
+                />
+
+              </div>
+
+              <Input
+                placeholder="Mobile Number"
+                value={phone}
+                onChange={(e) =>
+                  setPhone(
+                    e.target.value
+                  )
+                }
+                className="h-14"
+              />
+
+              <Button
+                onClick={payNow}
+                className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
+              >
+                <CreditCard className="w-5 h-5 mr-2" />
+
+                Pay ₹
                 {amount.toLocaleString(
                   "en-IN"
                 )}
-              </span>
+              </Button>
+
+              <div className="flex items-center justify-center gap-2 mt-5 text-sm text-green-700">
+                <ShieldCheck className="w-4 h-4" />
+
+                <span>
+                  256-bit SSL encrypted payment
+                </span>
+              </div>
+
             </div>
+
           </div>
 
-          <Input
-            placeholder="Enter Mobile Number"
-            value={phone}
-            onChange={(e) =>
-              setPhone(e.target.value)
-            }
-            className="h-14 mb-5"
-          />
-
-          <Button
-            onClick={sendOtp}
-            className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
-          >
-            Pay ₹
-            {amount.toLocaleString(
-              "en-IN"
-            )}
-          </Button>
-
-          <div className="flex items-center justify-center gap-2 mt-6 text-sm text-green-700">
-            <ShieldCheck className="w-4 h-4" />
-
-            <span>
-              256-bit SSL encrypted
-              payment
-            </span>
-          </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
