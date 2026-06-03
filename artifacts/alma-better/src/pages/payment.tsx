@@ -21,6 +21,9 @@ import html2canvas from "html2canvas";
 
 export default function Payment() {
 
+  const [paymentMethod, setPaymentMethod] =
+    useState("cards");
+
   const [cardName, setCardName] =
     useState("");
 
@@ -73,7 +76,9 @@ export default function Payment() {
     ).toString();
 
   function payNow() {
+
     setShowOtp(true);
+
   }
 
   function verifyOtp() {
@@ -118,7 +123,7 @@ export default function Payment() {
 
   }
 
-  // PROCESSING SCREEN
+  // PROCESSING
   if (processing) {
 
     return (
@@ -304,7 +309,7 @@ export default function Payment() {
                 </span>
 
                 <span>
-                  Yes Bank Credit Card
+                  {paymentMethod.toUpperCase()}
                 </span>
 
               </div>
@@ -415,7 +420,6 @@ export default function Payment() {
 
   }
 
-  // MAIN PAGE
   return (
 
     <div className="min-h-screen bg-[#f5f5f5]">
@@ -444,7 +448,7 @@ export default function Payment() {
 
         <div className="grid lg:grid-cols-2 gap-8">
 
-          {/* LEFT SIDE */}
+          {/* LEFT */}
           <div className="space-y-5">
 
             <div className="flex items-start gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
@@ -496,85 +500,71 @@ export default function Payment() {
               <div className="grid grid-cols-2 gap-3">
 
                 <div className="border rounded-2xl p-4 flex items-center gap-3">
-                  🏦 Yes Bank
-                </div>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/7/77/Yes_Bank_SVG_Logo.svg"
+                    className="h-8"
+                  />
 
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
-                  🏦 HDFC Bank
-                </div>
+                  <div>
+                    <p className="font-semibold text-sm">
+                      Yes Bank
+                    </p>
 
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
-                  🏦 ICICI Bank
-                </div>
-
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
-                  🏦 SBI Cards
-                </div>
-
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
-                  🏦 Axis Bank
-                </div>
-
-                <div className="border rounded-2xl p-4 flex items-center gap-3">
-                  🏦 Kotak Bank
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* ORDER SUMMARY */}
-            <div className="bg-white rounded-3xl border p-6">
-
-              <h3 className="font-bold text-xl mb-4">
-                Order Summary
-              </h3>
-
-              <div className="space-y-3">
-
-                <div className="flex justify-between">
-
-                  <span>
-                    Course Fee
-                  </span>
-
-                  <span>
-                    ₹88,999
-                  </span>
-
-                </div>
-
-                {isVerifiedCard && (
-
-                  <div className="flex justify-between text-green-700">
-
-                    <span>
-                      Yes Bank Instant Discount
-                    </span>
-
-                    <span>
-                      - ₹4,450
-                    </span>
-
+                    <p className="text-xs text-green-600">
+                      5% Instant Discount
+                    </p>
                   </div>
+                </div>
 
-                )}
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg"
+                    className="h-8"
+                  />
 
-                <div className="border-t pt-3 flex justify-between font-bold text-xl">
+                  <div>
+                    <p className="font-semibold text-sm">
+                      HDFC Bank
+                    </p>
 
-                  <span>
-                    Total Payable
-                  </span>
+                    <p className="text-xs text-gray-500">
+                      No Cost EMI
+                    </p>
+                  </div>
+                </div>
 
-                  <span>
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg"
+                    className="h-8"
+                  />
 
-                    ₹
-                    {amount.toLocaleString(
-                      "en-IN"
-                    )}
+                  <div>
+                    <p className="font-semibold text-sm">
+                      ICICI Bank
+                    </p>
 
-                  </span>
+                    <p className="text-xs text-gray-500">
+                      Cashback Offers
+                    </p>
+                  </div>
+                </div>
 
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg"
+                    className="h-8"
+                  />
+
+                  <div>
+                    <p className="font-semibold text-sm">
+                      SBI Cards
+                    </p>
+
+                    <p className="text-xs text-gray-500">
+                      Reward Points
+                    </p>
+                  </div>
                 </div>
 
               </div>
@@ -583,7 +573,7 @@ export default function Payment() {
 
           </div>
 
-          {/* RIGHT SIDE */}
+          {/* RIGHT */}
           <div className="bg-white rounded-3xl border shadow-xl p-8">
 
             <h2 className="text-2xl font-bold mb-2">
@@ -594,10 +584,19 @@ export default function Payment() {
               Choose your preferred payment method
             </p>
 
-            {/* PAYMENT OPTIONS */}
+            {/* PAYMENT TABS */}
             <div className="grid grid-cols-4 gap-3 mb-6">
 
-              <button className="border-2 border-orange-500 bg-orange-50 rounded-2xl p-4 flex flex-col items-center justify-center">
+              <button
+                onClick={() =>
+                  setPaymentMethod("cards")
+                }
+                className={`rounded-2xl p-4 flex flex-col items-center justify-center border ${
+                  paymentMethod === "cards"
+                    ? "border-2 border-orange-500 bg-orange-50"
+                    : ""
+                }`}
+              >
 
                 <CreditCard className="w-6 h-6 text-orange-500 mb-2" />
 
@@ -607,11 +606,21 @@ export default function Payment() {
 
               </button>
 
-              <button className="border rounded-2xl p-4 flex flex-col items-center justify-center">
+              <button
+                onClick={() =>
+                  setPaymentMethod("upi")
+                }
+                className={`rounded-2xl p-4 flex flex-col items-center justify-center border ${
+                  paymentMethod === "upi"
+                    ? "border-2 border-orange-500 bg-orange-50"
+                    : ""
+                }`}
+              >
 
-                <span className="text-2xl mb-2">
-                  📲
-                </span>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/2560px-UPI-Logo-vector.svg.png"
+                  className="h-6 object-contain mb-2"
+                />
 
                 <p className="font-semibold text-sm">
                   UPI
@@ -619,11 +628,21 @@ export default function Payment() {
 
               </button>
 
-              <button className="border rounded-2xl p-4 flex flex-col items-center justify-center">
+              <button
+                onClick={() =>
+                  setPaymentMethod("cred")
+                }
+                className={`rounded-2xl p-4 flex flex-col items-center justify-center border ${
+                  paymentMethod === "cred"
+                    ? "border-2 border-orange-500 bg-orange-50"
+                    : ""
+                }`}
+              >
 
-                <span className="text-2xl mb-2">
-                  💳
-                </span>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/8/89/Cred_logo.png"
+                  className="h-6 object-contain mb-2"
+                />
 
                 <p className="font-semibold text-sm">
                   CRED
@@ -631,11 +650,21 @@ export default function Payment() {
 
               </button>
 
-              <button className="border rounded-2xl p-4 flex flex-col items-center justify-center">
+              <button
+                onClick={() =>
+                  setPaymentMethod("banking")
+                }
+                className={`rounded-2xl p-4 flex flex-col items-center justify-center border ${
+                  paymentMethod === "banking"
+                    ? "border-2 border-orange-500 bg-orange-50"
+                    : ""
+                }`}
+              >
 
-                <span className="text-2xl mb-2">
-                  🏦
-                </span>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png"
+                  className="h-6 object-contain mb-2"
+                />
 
                 <p className="font-semibold text-sm">
                   Banking
@@ -645,143 +674,245 @@ export default function Payment() {
 
             </div>
 
-            <div className="space-y-4">
+            {/* UPI */}
+            {paymentMethod === "upi" && (
 
-              <Input
-                placeholder="Card Holder Name"
-                value={cardName}
-                onChange={(e) =>
-                  setCardName(
-                    e.target.value
-                  )
-                }
-                className="h-14"
-              />
+              <div className="space-y-4 mb-6">
 
-              <Input
-                placeholder="1234 5678 9012 3456"
-                value={cardNumber}
-                onChange={(e) => {
+                <div className="border rounded-2xl p-4 flex items-center justify-between">
+                  <span>Google Pay</span>
+                  <span>📲</span>
+                </div>
 
-                  const rawValue =
-                    e.target.value.replace(
-                      /\D/g,
-                      ""
-                    );
+                <div className="border rounded-2xl p-4 flex items-center justify-between">
+                  <span>PhonePe</span>
+                  <span>💜</span>
+                </div>
 
-                  const formattedValue =
-                    rawValue
-                      .substring(0, 16)
-                      .replace(
-                        /(.{4})/g,
-                        "$1 "
-                      )
-                      .trim();
+                <div className="border rounded-2xl p-4 flex items-center justify-between">
+                  <span>Paytm</span>
+                  <span>💙</span>
+                </div>
 
-                  setCardNumber(
-                    formattedValue
-                  );
+                <Button
+                  onClick={payNow}
+                  className="w-full h-14 rounded-2xl bg-orange-500"
+                >
+                  Pay via UPI
+                </Button>
 
-                  if (
-                    rawValue.length === 16
-                  ) {
-                    setIsVerifiedCard(
-                      true
-                    );
-                  } else {
-                    setIsVerifiedCard(
-                      false
-                    );
-                  }
+              </div>
 
-                }}
-                className="h-14 text-lg tracking-[2px]"
-              />
+            )}
 
-              {isVerifiedCard && (
+            {/* CRED */}
+            {paymentMethod === "cred" && (
 
-                <div className="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+              <div className="border rounded-3xl p-6 mb-6">
+
+                <div className="flex items-center gap-3 mb-4">
+
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/Cred_logo.png"
+                    className="h-8"
+                  />
 
                   <div>
 
-                    <p className="font-semibold text-green-700">
-                      Yes Bank Card Verified
+                    <p className="font-bold">
+                      Pay using CRED
                     </p>
 
-                    <p className="text-sm text-green-600">
-                      5% Instant Discount Applied
+                    <p className="text-sm text-gray-500">
+                      Earn rewards & cashback
                     </p>
 
-                  </div>
-
-                  <div className="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    VERIFIED
                   </div>
 
                 </div>
 
-              )}
-
-              <div className="grid grid-cols-2 gap-4">
-
-                <Input
-                  placeholder="MM/YY"
-                  value={expiry}
-                  onChange={(e) =>
-                    setExpiry(
-                      e.target.value
-                    )
-                  }
-                  className="h-14"
-                />
-
-                <Input
-                  placeholder="CVV"
-                  value={cvv}
-                  onChange={(e) =>
-                    setCvv(
-                      e.target.value
-                    )
-                  }
-                  className="h-14"
-                />
+                <Button
+                  onClick={payNow}
+                  className="w-full h-14 rounded-2xl bg-black hover:bg-gray-900"
+                >
+                  Continue with CRED
+                </Button>
 
               </div>
 
-              <Input
-                placeholder="Mobile Number"
-                value={phone}
-                onChange={(e) =>
-                  setPhone(
-                    e.target.value
-                  )
-                }
-                className="h-14"
-              />
+            )}
 
-              <Button
-                onClick={payNow}
-                className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
-              >
+            {/* BANKING */}
+            {paymentMethod === "banking" && (
 
-                <CreditCard className="w-5 h-5 mr-2" />
+              <div className="grid grid-cols-2 gap-3 mb-6">
 
-                Pay ₹
-                {amount.toLocaleString(
-                  "en-IN"
+                <button className="border rounded-2xl p-4">
+                  HDFC Bank
+                </button>
+
+                <button className="border rounded-2xl p-4">
+                  ICICI Bank
+                </button>
+
+                <button className="border rounded-2xl p-4">
+                  SBI Bank
+                </button>
+
+                <button className="border rounded-2xl p-4">
+                  Axis Bank
+                </button>
+
+              </div>
+
+            )}
+
+            {/* CARD FORM */}
+            {paymentMethod === "cards" && (
+
+              <div className="space-y-4">
+
+                <Input
+                  placeholder="Card Holder Name"
+                  value={cardName}
+                  onChange={(e) =>
+                    setCardName(
+                      e.target.value
+                    )
+                  }
+                  className="h-14"
+                />
+
+                <Input
+                  placeholder="1234 5678 9012 3456"
+                  value={cardNumber}
+                  onChange={(e) => {
+
+                    const rawValue =
+                      e.target.value.replace(
+                        /\D/g,
+                        ""
+                      );
+
+                    const formattedValue =
+                      rawValue
+                        .substring(0, 16)
+                        .replace(
+                          /(.{4})/g,
+                          "$1 "
+                        )
+                        .trim();
+
+                    setCardNumber(
+                      formattedValue
+                    );
+
+                    if (
+                      rawValue.length === 16
+                    ) {
+
+                      setIsVerifiedCard(
+                        true
+                      );
+
+                    } else {
+
+                      setIsVerifiedCard(
+                        false
+                      );
+
+                    }
+
+                  }}
+                  className="h-14 text-lg tracking-[2px]"
+                />
+
+                {isVerifiedCard && (
+
+                  <div className="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+
+                    <div>
+
+                      <p className="font-semibold text-green-700">
+                        Yes Bank Card Verified
+                      </p>
+
+                      <p className="text-sm text-green-600">
+                        5% Instant Discount Applied
+                      </p>
+
+                    </div>
+
+                    <div className="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      VERIFIED
+                    </div>
+
+                  </div>
+
                 )}
 
-              </Button>
+                <div className="grid grid-cols-2 gap-4">
 
-              <div className="flex items-center justify-center gap-2 mt-5 text-sm text-green-700">
+                  <Input
+                    placeholder="MM/YY"
+                    value={expiry}
+                    onChange={(e) =>
+                      setExpiry(
+                        e.target.value
+                      )
+                    }
+                    className="h-14"
+                  />
 
-                <ShieldCheck className="w-4 h-4" />
+                  <Input
+                    placeholder="CVV"
+                    value={cvv}
+                    onChange={(e) =>
+                      setCvv(
+                        e.target.value
+                      )
+                    }
+                    className="h-14"
+                  />
 
-                <span>
-                  256-bit SSL encrypted payment
-                </span>
+                </div>
+
+                <Input
+                  placeholder="Mobile Number"
+                  value={phone}
+                  onChange={(e) =>
+                    setPhone(
+                      e.target.value
+                    )
+                  }
+                  className="h-14"
+                />
+
+                <Button
+                  onClick={payNow}
+                  className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
+                >
+
+                  <CreditCard className="w-5 h-5 mr-2" />
+
+                  Pay ₹
+                  {amount.toLocaleString(
+                    "en-IN"
+                  )}
+
+                </Button>
 
               </div>
+
+            )}
+
+            <div className="flex items-center justify-center gap-2 mt-5 text-sm text-green-700">
+
+              <ShieldCheck className="w-4 h-4" />
+
+              <span>
+                256-bit SSL encrypted payment
+              </span>
 
             </div>
 
