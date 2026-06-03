@@ -197,20 +197,23 @@ function onSubmit(values: FormValues) {
                     )}
                   />
 
-                  <div className="pt-4">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      data-testid="button-submit-enrollment"
-                      disabled={false}
-                      className="w-full h-14 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
-                    >
-                      <>
-  Proceed to Payment
-  <ArrowRight className="ml-2 w-5 h-5" />
-</>
-                   
-                  </div>
+                  
+<div className="pt-4">
+  <Button
+    type="submit"
+    size="lg"
+    data-testid="button-submit-enrollment"
+    disabled={false}
+    className="w-full h-14 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+  >
+    <>
+      Proceed to Payment
+      <ArrowRight className="ml-2 w-5 h-5" />
+    </>
+  </Button>
+</div>
+
+
                 </form>
               </Form>
             </div>
