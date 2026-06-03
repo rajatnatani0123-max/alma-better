@@ -20,6 +20,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 export default function Payment() {
+
   const [cardName, setCardName] =
     useState("");
 
@@ -29,12 +30,14 @@ export default function Payment() {
   const [expiry, setExpiry] =
     useState("");
 
-  const [cvv, setCvv] = useState("");
+  const [cvv, setCvv] =
+    useState("");
 
   const [phone, setPhone] =
     useState("");
 
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] =
+    useState("");
 
   const [showOtp, setShowOtp] =
     useState(false);
@@ -74,21 +77,28 @@ export default function Payment() {
   }
 
   function verifyOtp() {
+
     setProcessing(true);
 
     setTimeout(() => {
+
       setProcessing(false);
 
       setPaid(true);
+
     }, 3500);
+
   }
 
   async function downloadReceipt() {
-    const input = document.getElementById(
-      "receipt"
-    ) as HTMLElement;
 
-    const canvas = await html2canvas(input);
+    const input =
+      document.getElementById(
+        "receipt"
+      ) as HTMLElement;
+
+    const canvas =
+      await html2canvas(input);
 
     const imgData =
       canvas.toDataURL("image/png");
@@ -105,17 +115,22 @@ export default function Payment() {
     );
 
     pdf.save("payment-receipt.pdf");
+
   }
 
   // PROCESSING SCREEN
   if (processing) {
+
     return (
+
       <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] px-6">
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="bg-white rounded-3xl shadow-xl p-10 w-full max-w-md text-center"
         >
+
           <div className="w-20 h-20 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
 
           <h1 className="text-3xl font-bold text-[#111827] mb-3">
@@ -123,22 +138,30 @@ export default function Payment() {
           </h1>
 
           <p className="text-gray-500">
-            Please wait while we securely
-            process your payment...
+            Please wait while we securely process your payment...
           </p>
 
           <div className="mt-6 bg-gray-100 rounded-full h-3 overflow-hidden">
+
             <div className="bg-orange-500 h-full animate-pulse w-full"></div>
+
           </div>
+
         </motion.div>
+
       </div>
+
     );
+
   }
 
   // SUCCESS PAGE
   if (paid) {
+
     return (
+
       <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-6 py-10">
+
         <motion.div
           initial={{
             opacity: 0,
@@ -150,13 +173,18 @@ export default function Payment() {
           }}
           className="w-full max-w-2xl"
         >
+
           <div
             id="receipt"
             className="bg-white rounded-3xl shadow-xl p-8"
           >
+
             <div className="text-center mb-8">
+
               <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+
                 <CheckCircle2 className="w-12 h-12 text-green-600" />
+
               </div>
 
               <h1 className="text-4xl font-bold text-[#111827] mb-2">
@@ -164,54 +192,73 @@ export default function Payment() {
               </h1>
 
               <p className="text-gray-500">
-                Transaction Completed
-                Successfully
+                Transaction Completed Successfully
               </p>
+
             </div>
 
             <div className="border rounded-2xl p-6 mb-6 space-y-4">
+
               <div className="flex justify-between">
+
                 <span>Student Name</span>
 
                 <span className="font-semibold">
                   {cardName || "Rajat Natani"}
                 </span>
+
               </div>
 
               <div className="flex justify-between">
+
                 <span>Course</span>
 
                 <span className="font-semibold text-right max-w-[60%]">
-                  AlmaBetter Placement
-                  Guarantee Program
+                  AlmaBetter Placement Guarantee Program
                 </span>
+
               </div>
 
               <div className="flex justify-between">
+
                 <span>Card Used</span>
 
                 <span>
                   **** **** ****{" "}
-                  {cardNumber.slice(-4)}
+                  {cardNumber
+                    .replace(/\s/g, "")
+                    .slice(-4)}
                 </span>
+
               </div>
 
               <div className="flex justify-between">
+
                 <span>Original Amount</span>
 
-                <span>₹88,999</span>
+                <span>
+                  ₹88,999
+                </span>
+
               </div>
 
               <div className="flex justify-between text-green-700">
+
                 <span>
                   Yes Bank Discount
                 </span>
 
-                <span>- ₹4,450</span>
+                <span>
+                  - ₹4,450
+                </span>
+
               </div>
 
               <div className="border-t pt-3 flex justify-between text-lg font-bold">
-                <span>Amount Paid</span>
+
+                <span>
+                  Amount Paid
+                </span>
 
                 <span>
                   ₹
@@ -219,11 +266,15 @@ export default function Payment() {
                     "en-IN"
                   )}
                 </span>
+
               </div>
+
             </div>
 
             <div className="border rounded-2xl p-6 mb-6 space-y-4">
+
               <div className="flex justify-between">
+
                 <span>
                   Transaction ID
                 </span>
@@ -231,15 +282,23 @@ export default function Payment() {
                 <span>
                   {transactionId}
                 </span>
+
               </div>
 
               <div className="flex justify-between">
-                <span>UTR Number</span>
 
-                <span>{utr}</span>
+                <span>
+                  UTR Number
+                </span>
+
+                <span>
+                  {utr}
+                </span>
+
               </div>
 
               <div className="flex justify-between">
+
                 <span>
                   Payment Method
                 </span>
@@ -247,42 +306,59 @@ export default function Payment() {
                 <span>
                   Yes Bank Credit Card
                 </span>
+
               </div>
 
               <div className="flex justify-between">
+
                 <span>Status</span>
 
                 <span className="text-green-600 font-bold">
                   SUCCESS
                 </span>
+
               </div>
 
               <div className="flex justify-between">
+
                 <span>Date</span>
 
                 <span>
                   {new Date().toLocaleString()}
                 </span>
+
               </div>
+
             </div>
 
             <Button
               onClick={downloadReceipt}
               className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
             >
+
               <Download className="w-5 h-5 mr-2" />
+
               Download Receipt PDF
+
             </Button>
+
           </div>
+
         </motion.div>
+
       </div>
+
     );
+
   }
 
   // OTP PAGE
   if (showOtp) {
+
     return (
+
       <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] px-6">
+
         <motion.div
           initial={{
             opacity: 0,
@@ -294,9 +370,13 @@ export default function Payment() {
           }}
           className="bg-white rounded-3xl shadow-xl border p-8 w-full max-w-md"
         >
+
           <div className="text-center mb-6">
+
             <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-4">
+
               <ShieldCheck className="w-10 h-10 text-orange-500" />
+
             </div>
 
             <h1 className="text-3xl font-bold text-[#111827] mb-2">
@@ -306,6 +386,7 @@ export default function Payment() {
             <p className="text-gray-500">
               OTP sent to +91 {phone}
             </p>
+
           </div>
 
           <Input
@@ -321,42 +402,63 @@ export default function Payment() {
             onClick={verifyOtp}
             className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
           >
+
             Verify Payment
+
           </Button>
+
         </motion.div>
+
       </div>
+
     );
+
   }
 
   // MAIN PAGE
   return (
+
     <div className="min-h-screen bg-[#f5f5f5]">
+
       <nav className="sticky top-0 z-50 w-full bg-white border-b">
+
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+
           <button className="flex items-center gap-2 text-gray-600">
+
             <ArrowLeft className="w-5 h-5" />
+
             Back
+
           </button>
 
           <h1 className="font-bold text-2xl">
             AlmaBetter
           </h1>
+
         </div>
+
       </nav>
 
       <div className="max-w-6xl mx-auto px-6 py-12">
+
         <div className="grid lg:grid-cols-2 gap-8">
 
           {/* LEFT SIDE */}
           <div className="space-y-5">
 
             <div className="flex items-start gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+
               <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+
                 <Tag className="w-6 h-6 text-white" />
+
               </div>
 
               <div>
+
                 <div className="flex items-center gap-2 mb-1">
+
                   <span className="font-bold text-lg">
                     Yes Bank Offer
                   </span>
@@ -364,20 +466,24 @@ export default function Payment() {
                   <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">
                     5% OFF
                   </span>
+
                 </div>
 
                 <p className="text-white/90 text-sm">
-                  Pay using eligible cards
-                  and get instant cashback.
+                  Pay using eligible cards and get instant cashback.
                 </p>
 
                 <div className="mt-3 font-bold text-3xl">
+
                   ₹
                   {amount.toLocaleString(
                     "en-IN"
                   )}
+
                 </div>
+
               </div>
+
             </div>
 
             {/* BANK OFFERS */}
@@ -387,30 +493,30 @@ export default function Payment() {
                 Available Bank Offers
               </h3>
 
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-2 gap-3">
 
-                <div className="border rounded-xl p-3">
-                  Yes Bank - 5% OFF
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  🏦 Yes Bank
                 </div>
 
-                <div className="border rounded-xl p-3">
-                  HDFC Bank EMI
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  🏦 HDFC Bank
                 </div>
 
-                <div className="border rounded-xl p-3">
-                  ICICI Cashback
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  🏦 ICICI Bank
                 </div>
 
-                <div className="border rounded-xl p-3">
-                  SBI Credit Cards
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  🏦 SBI Cards
                 </div>
 
-                <div className="border rounded-xl p-3">
-                  Axis Rewards
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  🏦 Axis Bank
                 </div>
 
-                <div className="border rounded-xl p-3">
-                  Kotak Instant Offer
+                <div className="border rounded-2xl p-4 flex items-center gap-3">
+                  🏦 Kotak Bank
                 </div>
 
               </div>
@@ -427,30 +533,46 @@ export default function Payment() {
               <div className="space-y-3">
 
                 <div className="flex justify-between">
-                  <span>Course Fee</span>
 
-                  <span>₹88,999</span>
+                  <span>
+                    Course Fee
+                  </span>
+
+                  <span>
+                    ₹88,999
+                  </span>
+
                 </div>
 
                 {isVerifiedCard && (
+
                   <div className="flex justify-between text-green-700">
+
                     <span>
                       Yes Bank Instant Discount
                     </span>
 
-                    <span>- ₹4,450</span>
+                    <span>
+                      - ₹4,450
+                    </span>
+
                   </div>
+
                 )}
 
                 <div className="border-t pt-3 flex justify-between font-bold text-xl">
 
-                  <span>Total Payable</span>
+                  <span>
+                    Total Payable
+                  </span>
 
                   <span>
+
                     ₹
                     {amount.toLocaleString(
                       "en-IN"
                     )}
+
                   </span>
 
                 </div>
@@ -472,32 +594,54 @@ export default function Payment() {
               Choose your preferred payment method
             </p>
 
-            {/* PAYMENT TABS */}
+            {/* PAYMENT OPTIONS */}
             <div className="grid grid-cols-4 gap-3 mb-6">
 
-              <div className="border-2 border-orange-500 bg-orange-50 rounded-2xl p-3 text-center">
+              <button className="border-2 border-orange-500 bg-orange-50 rounded-2xl p-4 flex flex-col items-center justify-center">
+
+                <CreditCard className="w-6 h-6 text-orange-500 mb-2" />
+
                 <p className="font-semibold text-sm">
                   Cards
                 </p>
-              </div>
 
-              <div className="border rounded-2xl p-3 text-center">
+              </button>
+
+              <button className="border rounded-2xl p-4 flex flex-col items-center justify-center">
+
+                <span className="text-2xl mb-2">
+                  📲
+                </span>
+
                 <p className="font-semibold text-sm">
                   UPI
                 </p>
-              </div>
 
-              <div className="border rounded-2xl p-3 text-center">
+              </button>
+
+              <button className="border rounded-2xl p-4 flex flex-col items-center justify-center">
+
+                <span className="text-2xl mb-2">
+                  💳
+                </span>
+
                 <p className="font-semibold text-sm">
-                  EMI
+                  CRED
                 </p>
-              </div>
 
-              <div className="border rounded-2xl p-3 text-center">
+              </button>
+
+              <button className="border rounded-2xl p-4 flex flex-col items-center justify-center">
+
+                <span className="text-2xl mb-2">
+                  🏦
+                </span>
+
                 <p className="font-semibold text-sm">
                   Banking
                 </p>
-              </div>
+
+              </button>
 
             </div>
 
@@ -515,28 +659,47 @@ export default function Payment() {
               />
 
               <Input
-                placeholder="Card Number"
+                placeholder="1234 5678 9012 3456"
                 value={cardNumber}
                 onChange={(e) => {
 
-                  const value =
-                    e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 16);
+                  const rawValue =
+                    e.target.value.replace(
+                      /\D/g,
+                      ""
+                    );
 
-                  setCardNumber(value);
+                  const formattedValue =
+                    rawValue
+                      .substring(0, 16)
+                      .replace(
+                        /(.{4})/g,
+                        "$1 "
+                      )
+                      .trim();
 
-                  if (value.length === 16) {
-                    setIsVerifiedCard(true);
+                  setCardNumber(
+                    formattedValue
+                  );
+
+                  if (
+                    rawValue.length === 16
+                  ) {
+                    setIsVerifiedCard(
+                      true
+                    );
                   } else {
-                    setIsVerifiedCard(false);
+                    setIsVerifiedCard(
+                      false
+                    );
                   }
 
                 }}
-                className="h-14"
+                className="h-14 text-lg tracking-[2px]"
               />
 
               {isVerifiedCard && (
+
                 <div className="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
 
                   <div>
@@ -556,6 +719,7 @@ export default function Payment() {
                   </div>
 
                 </div>
+
               )}
 
               <div className="grid grid-cols-2 gap-4">
@@ -599,12 +763,14 @@ export default function Payment() {
                 onClick={payNow}
                 className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
               >
+
                 <CreditCard className="w-5 h-5 mr-2" />
 
                 Pay ₹
                 {amount.toLocaleString(
                   "en-IN"
                 )}
+
               </Button>
 
               <div className="flex items-center justify-center gap-2 mt-5 text-sm text-green-700">
@@ -622,7 +788,11 @@ export default function Payment() {
           </div>
 
         </div>
+
       </div>
+
     </div>
+
   );
+
 }
