@@ -44,20 +44,30 @@ export default function Payment() {
     const options = {
       key: "rzp_test_SwkhvnJtl5e00t",
 
-      amount: 49900,
+      // ₹84,549
+      amount: creditCardPrice * 100,
 
       currency: "INR",
 
       name: "AlmaBetter",
 
       description:
-        "Full Course Enrollment Payment",
+        "Placement Guarantee Program Payment",
 
       image:
         "https://almabetter.com/favicon.ico",
 
       handler: function () {
         setPaid(true);
+      },
+
+      prefill: {
+        name: enrollment.name,
+        email: enrollment.email,
+      },
+
+      notes: {
+        course: enrollment.course,
       },
 
       theme: {
@@ -116,7 +126,7 @@ export default function Payment() {
 
               <span className="font-semibold text-secondary">
                 ₹
-                {enrollment.totalAmount.toLocaleString(
+                {creditCardPrice.toLocaleString(
                   "en-IN"
                 )}
               </span>
@@ -229,6 +239,7 @@ export default function Payment() {
                 </div>
               </motion.div>
 
+              {/* QR SECTION */}
               <div className="bg-white rounded-3xl border border-border shadow-sm p-6 flex flex-col items-center">
                 <h3 className="text-secondary font-bold text-lg mb-1">
                   Scan to Pay via UPI
@@ -247,17 +258,18 @@ export default function Payment() {
                 <div className="mt-5 text-center">
                   <div className="text-3xl font-extrabold text-secondary">
                     ₹
-                    {enrollment.totalAmount.toLocaleString(
+                    {creditCardPrice.toLocaleString(
                       "en-IN"
                     )}
                   </div>
 
                   <div className="text-sm text-muted-foreground mt-1">
-                    Total amount including GST
+                    Discounted amount after 5% Yes Bank offer
                   </div>
                 </div>
               </div>
 
+              {/* SECURITY */}
               <div className="flex items-center gap-3 px-5 py-4 rounded-xl bg-green-50 border border-green-100">
                 <ShieldCheck className="w-6 h-6 text-green-600 shrink-0" />
 
@@ -269,6 +281,7 @@ export default function Payment() {
 
             {/* RIGHT SIDE */}
             <div className="space-y-5">
+              {/* ORDER SUMMARY */}
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
                 <h3 className="font-bold text-secondary text-lg mb-5">
                   Order Summary
@@ -322,14 +335,28 @@ export default function Payment() {
                       </span>
                     </div>
 
+                    <div className="flex justify-between text-green-700">
+                      <span>
+                        Yes Bank Instant Discount
+                      </span>
+
+                      <span>
+                        - ₹
+                        {(
+                          enrollment.totalAmount -
+                          creditCardPrice
+                        ).toLocaleString("en-IN")}
+                      </span>
+                    </div>
+
                     <div className="flex justify-between pt-2 border-t border-border">
                       <span className="font-bold text-secondary">
-                        Total
+                        Final Payable
                       </span>
 
                       <span className="font-extrabold text-primary text-lg">
                         ₹
-                        {enrollment.totalAmount.toLocaleString(
+                        {creditCardPrice.toLocaleString(
                           "en-IN"
                         )}
                       </span>
@@ -338,7 +365,7 @@ export default function Payment() {
                 </div>
               </div>
 
-              {/* Payment Form */}
+              {/* PAYMENT FORM */}
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
                 <h3 className="font-bold text-secondary text-lg mb-2">
                   Card Payment
@@ -383,12 +410,12 @@ export default function Payment() {
                     </div>
 
                     <div className="flex justify-between text-sm mb-1">
-                      <span>Course Fee</span>
+                      <span>Original Price</span>
                       <span>₹88,999</span>
                     </div>
 
                     <div className="flex justify-between text-sm mb-1 text-green-700">
-                      <span>Instant Bank Discount</span>
+                      <span>Instant Discount</span>
                       <span>- ₹4,450</span>
                     </div>
 
@@ -396,7 +423,12 @@ export default function Payment() {
 
                     <div className="flex justify-between font-bold text-lg text-secondary">
                       <span>Total Payable</span>
-                      <span>₹84,549</span>
+                      <span>
+                        ₹
+                        {creditCardPrice.toLocaleString(
+                          "en-IN"
+                        )}
+                      </span>
                     </div>
                   </div>
 
@@ -405,7 +437,10 @@ export default function Payment() {
                     onClick={openRazorpay}
                     className="w-full h-14 text-lg font-bold rounded-2xl bg-primary hover:bg-primary/90"
                   >
-                    Proceed to Secure Payment
+                    Pay ₹
+                    {creditCardPrice.toLocaleString(
+                      "en-IN"
+                    )}
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
