@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
   CheckCircle2,
   CreditCard,
+  Download,
   ShieldCheck,
   Tag,
 } from "lucide-react";
@@ -12,6 +13,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import paymentQr from "@/assets/payment-qr.svg";
+
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 export default function Payment() {
   const [paid, setPaid] = useState(false);
@@ -29,123 +33,233 @@ export default function Payment() {
     enrollment.totalAmount * 0.95
   );
 
-  useEffect(() => {
-    const script = document.createElement("script");
+  const transactionId =
+    "pay_" +
+    Math.random()
+      .toString(36)
+      .substring(2, 12)
+      .toUpperCase();
 
-    script.src =
-      "https://checkout.razorpay.com/v1/checkout.js";
+  const utr =
+    Math.floor(
+      100000000000 + Math.random() * 900000000000
+    ).toString();
 
-    script.async = true;
+  function openDemoPayment() {
+    setPaid(true);
+  }
 
-    document.body.appendChild(script);
-  }, []);
+  async function downloadReceipt() {
+    const input = document.getElementById(
+      "receipt"
+    ) as HTMLElement;
 
-  function openRazorpay() {
-    const options = {
-      key: "rzp_test_SwkhvnJtl5e00t",
+    const canvas = await html2canvas(input);
 
-      // ₹84,549
-      amount: creditCardPrice * 100,
+    const imgData = canvas.toDataURL("image/png");
 
-      currency: "INR",
+    const pdf = new jsPDF("p", "mm", "a4");
 
-      name: "AlmaBetter",
+    const imgWidth = 210;
 
-      description:
-        "Placement Guarantee Program Payment",
+    const pageHeight = 295;
 
-      image:
-        "https://almabetter.com/favicon.ico",
+    const imgHeight =
+      (canvas.height * imgWidth) / canvas.width;
 
-      handler: function () {
-        setPaid(true);
-      },
+    let heightLeft = imgHeight;
 
-      prefill: {
-        name: enrollment.name,
-        email: enrollment.email,
-      },
+    let position = 0;
 
-      notes: {
-        course: enrollment.course,
-      },
-
-      theme: {
-        color: "#7C3AED",
-      },
-    };
-
-    const razorpay = new (window as any).Razorpay(
-      options
+    pdf.addImage(
+      imgData,
+      "PNG",
+      0,
+      position,
+      imgWidth,
+      imgHeight
     );
 
-    razorpay.open();
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+
+      pdf.addPage();
+
+      pdf.addImage(
+        imgData,
+        "PNG",
+        0,
+        position,
+        imgWidth,
+        imgHeight
+      );
+
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save("payment-receipt.pdf");
   }
 
   if (paid) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+      <div className="min-h-screen bg-background px-6 py-10 flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-lg"
+          className="w-full max-w-2xl"
         >
-          <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 className="w-12 h-12 text-green-600" />
+          <div
+            id="receipt"
+            className="bg-white rounded-3xl shadow-xl border border-border p-8"
+          >
+            <div className="text-center mb-8">
+              <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+                <CheckCircle2 className="w-12 h-12 text-green-600" />
+              </div>
+
+              <h1 className="text-4xl font-extrabold text-secondary mb-2">
+                Payment Successful
+              </h1>
+
+              <p className="text-muted-foreground">
+                Demo Payment Receipt
+              </p>
+            </div>
+
+            <div className="space-y-4 text-sm border rounded-2xl p-6 mb-6">
+              <div className="flex justify-between">
+                <span>Student Name</span>
+                <span className="font-semibold">
+                  {enrollment.name}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Course</span>
+                <span className="font-semibold text-right max-w-[60%]">
+                  {enrollment.course}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Original Amount</span>
+                <span>₹88,999</span>
+              </div>
+
+              <div className="flex justify-between text-green-700">
+                <span>Yes Bank Discount</span>
+                <span>- ₹4,450</span>
+              </div>
+
+              <div className="flex justify-between font-bold text-lg border-t pt-3">
+                <span>Amount Paid</span>
+                <span>
+                  ₹
+                  {creditCardPrice.toLocaleString(
+                    "en-IN"
+                  )}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-3 border rounded-2xl p-6 mb-6 text-sm">
+              <div className="flex justify-between">
+                <span>Transaction ID</span>
+
+                <span className="font-medium">
+                  {transactionId}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>UTR Number</span>
+
+                <span className="font-medium">
+                  {utr}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Payment Method</span>
+
+                <span className="font-medium">
+                  Yes Bank Credit Card
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Status</span>
+
+                <span className="text-green-600 font-bold">
+                  SUCCESS
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Date</span>
+
+                <span className="font-medium">
+                  {new Date().toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            <div className="border rounded-2xl p-6 mb-6">
+              <h3 className="font-bold text-lg mb-4">
+                Course Conditions
+              </h3>
+
+              <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
+                <li>
+                  Placement guarantee applicable after
+                  successful course completion.
+                </li>
+
+                <li>
+                  Student must complete all assignments
+                  and assessments.
+                </li>
+
+                <li>
+                  Minimum attendance criteria must be
+                  maintained.
+                </li>
+
+                <li>
+                  Refund applicable only as per company
+                  policy.
+                </li>
+
+                <li>
+                  Interview participation is mandatory.
+                </li>
+
+                <li>
+                  This is a sandbox/demo transaction
+                  receipt.
+                </li>
+              </ul>
+            </div>
+
+            <div className="flex gap-4">
+              <Button
+                onClick={downloadReceipt}
+                className="flex-1 h-14 text-lg rounded-2xl"
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Download PDF
+              </Button>
+
+              <Button
+                variant="outline"
+                className="flex-1 h-14 text-lg rounded-2xl"
+              >
+                Back Home
+              </Button>
+            </div>
           </div>
-
-          <h1 className="text-4xl font-extrabold text-secondary mb-3">
-            Payment Successful!
-          </h1>
-
-          <p className="text-lg text-muted-foreground mb-6">
-            Thank you,
-            <span className="font-semibold text-secondary">
-              {" "}
-              {enrollment.name}
-            </span>
-            !
-          </p>
-
-          <div className="bg-muted/50 rounded-2xl p-6 text-left mb-8 border border-border space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">
-                Course
-              </span>
-
-              <span className="font-semibold text-secondary text-right max-w-[60%]">
-                {enrollment.course}
-              </span>
-            </div>
-
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">
-                Amount Paid
-              </span>
-
-              <span className="font-semibold text-secondary">
-                ₹
-                {creditCardPrice.toLocaleString(
-                  "en-IN"
-                )}
-              </span>
-            </div>
-
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">
-                Confirmation sent to
-              </span>
-
-              <span className="font-semibold text-secondary">
-                {enrollment.email}
-              </span>
-            </div>
-          </div>
-
-          <Button className="h-14 px-10 text-lg rounded-full bg-primary hover:bg-primary/90 text-white">
-            Back to Home
-          </Button>
         </motion.div>
       </div>
     );
@@ -153,7 +267,6 @@ export default function Payment() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navbar */}
       <nav className="sticky top-0 z-50 w-full backdrop-blur-xl bg-background/80 border-b border-border/50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
@@ -182,7 +295,6 @@ export default function Payment() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Heading */}
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-4">
               Step 2 of 2 — Payment
@@ -198,7 +310,6 @@ export default function Payment() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* LEFT SIDE */}
             <div className="space-y-5">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -222,8 +333,8 @@ export default function Payment() {
                   </div>
 
                   <p className="text-white/90 text-sm">
-                    Pay using your Yes Bank Credit Card and get
-                    5% instant cashback.
+                    Pay using your Yes Bank Credit Card
+                    and get 5% instant cashback.
                   </p>
 
                   <div className="mt-2 flex items-center gap-2">
@@ -239,14 +350,14 @@ export default function Payment() {
                 </div>
               </motion.div>
 
-              {/* QR SECTION */}
               <div className="bg-white rounded-3xl border border-border shadow-sm p-6 flex flex-col items-center">
                 <h3 className="text-secondary font-bold text-lg mb-1">
                   Scan to Pay via UPI
                 </h3>
 
                 <p className="text-muted-foreground text-sm mb-5 text-center">
-                  Use GPay, PhonePe, Paytm or any UPI app
+                  Use GPay, PhonePe, Paytm or any UPI
+                  app
                 </p>
 
                 <img
@@ -264,24 +375,23 @@ export default function Payment() {
                   </div>
 
                   <div className="text-sm text-muted-foreground mt-1">
-                    Discounted amount after 5% Yes Bank offer
+                    Discounted amount after 5% Yes
+                    Bank offer
                   </div>
                 </div>
               </div>
 
-              {/* SECURITY */}
               <div className="flex items-center gap-3 px-5 py-4 rounded-xl bg-green-50 border border-green-100">
                 <ShieldCheck className="w-6 h-6 text-green-600 shrink-0" />
 
                 <p className="text-green-800 text-sm font-medium">
-                  100% secure payment. Your data is protected.
+                  100% secure payment. Your data is
+                  protected.
                 </p>
               </div>
             </div>
 
-            {/* RIGHT SIDE */}
             <div className="space-y-5">
-              {/* ORDER SUMMARY */}
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
                 <h3 className="font-bold text-secondary text-lg mb-5">
                   Order Summary
@@ -314,7 +424,7 @@ export default function Payment() {
                         Base Fee
                       </span>
 
-                      <span className="font-medium text-secondary">
+                      <span>
                         ₹
                         {enrollment.baseAmount.toLocaleString(
                           "en-IN"
@@ -327,7 +437,7 @@ export default function Payment() {
                         GST (18%)
                       </span>
 
-                      <span className="font-medium text-secondary">
+                      <span>
                         ₹
                         {enrollment.gstAmount.toLocaleString(
                           "en-IN"
@@ -340,13 +450,7 @@ export default function Payment() {
                         Yes Bank Instant Discount
                       </span>
 
-                      <span>
-                        - ₹
-                        {(
-                          enrollment.totalAmount -
-                          creditCardPrice
-                        ).toLocaleString("en-IN")}
-                      </span>
+                      <span>- ₹4,450</span>
                     </div>
 
                     <div className="flex justify-between pt-2 border-t border-border">
@@ -365,14 +469,13 @@ export default function Payment() {
                 </div>
               </div>
 
-              {/* PAYMENT FORM */}
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
                 <h3 className="font-bold text-secondary text-lg mb-2">
                   Card Payment
                 </h3>
 
                 <p className="text-muted-foreground text-sm mb-5">
-                  Complete your payment securely using Razorpay.
+                  Demo payment simulation mode.
                 </p>
 
                 <div className="space-y-4">
@@ -398,43 +501,9 @@ export default function Payment() {
                     />
                   </div>
 
-                  <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-green-800">
-                        Yes Bank Credit Card Offer Applied
-                      </span>
-
-                      <span className="text-xs font-bold bg-green-600 text-white px-2 py-1 rounded-full">
-                        VERIFIED
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Original Price</span>
-                      <span>₹88,999</span>
-                    </div>
-
-                    <div className="flex justify-between text-sm mb-1 text-green-700">
-                      <span>Instant Discount</span>
-                      <span>- ₹4,450</span>
-                    </div>
-
-                    <div className="border-t border-green-200 my-2"></div>
-
-                    <div className="flex justify-between font-bold text-lg text-secondary">
-                      <span>Total Payable</span>
-                      <span>
-                        ₹
-                        {creditCardPrice.toLocaleString(
-                          "en-IN"
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
                   <Button
                     type="button"
-                    onClick={openRazorpay}
+                    onClick={openDemoPayment}
                     className="w-full h-14 text-lg font-bold rounded-2xl bg-primary hover:bg-primary/90"
                   >
                     Pay ₹
@@ -444,7 +513,7 @@ export default function Payment() {
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
-                    256-bit SSL encrypted payment powered by Razorpay
+                    Demo checkout environment
                   </p>
                 </div>
               </div>
