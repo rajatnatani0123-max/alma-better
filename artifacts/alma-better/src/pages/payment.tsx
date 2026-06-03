@@ -504,7 +504,7 @@ export default function Payment() {
 
                   <img
                     src={yesbank}
-                    className="h-10 object-contain"
+                    className="h-6 w-auto object-contain"
                   />
 
                   <div>
@@ -526,7 +526,7 @@ export default function Payment() {
 
                   <img
                     src={hdfc}
-                    className="h-10 object-contain"
+                    className="h-7 w-auto object-contain"
                   />
 
                   <div>
@@ -548,7 +548,7 @@ export default function Payment() {
 
                   <img
                     src={icici}
-                    className="h-10 object-contain"
+                    className="h-7 w-auto object-contain"
                   />
 
                   <div>
@@ -570,7 +570,7 @@ export default function Payment() {
 
                   <img
                     src={sbi}
-                    className="h-10 object-contain"
+                    className="h-6 w-auto object-contain"
                   />
 
                   <div>
@@ -641,7 +641,7 @@ export default function Payment() {
 
                 <img
                   src={upi}
-                  className="h-7 object-contain mb-2"
+                  className="h-5 w-auto object-contain mb-2"
                 />
 
                 <p className="font-semibold text-sm">
@@ -662,9 +662,7 @@ export default function Payment() {
                 }`}
               >
 
-                <div className="text-2xl mb-2">
-                  💳
-                </div>
+                <CreditCard className="w-6 h-6 text-black mb-2" />
 
                 <p className="font-semibold text-sm">
                   CRED
@@ -684,9 +682,7 @@ export default function Payment() {
                 }`}
               >
 
-                <div className="text-2xl mb-2">
-                  🏦
-                </div>
+                <ShieldCheck className="w-6 h-6 text-gray-700 mb-2" />
 
                 <p className="font-semibold text-sm">
                   Banking
@@ -703,17 +699,17 @@ export default function Payment() {
 
                 <div className="border rounded-2xl p-4 flex items-center justify-between">
                   <span>Google Pay</span>
-                  <span>📲</span>
+                  <div className="w-5"></div>
                 </div>
 
                 <div className="border rounded-2xl p-4 flex items-center justify-between">
                   <span>PhonePe</span>
-                  <span>💜</span>
+                  <div className="w-5"></div>
                 </div>
 
                 <div className="border rounded-2xl p-4 flex items-center justify-between">
                   <span>Paytm</span>
-                  <span>💙</span>
+                  <div className="w-5"></div>
                 </div>
 
                 <Button
@@ -734,9 +730,7 @@ export default function Payment() {
 
                 <div className="flex items-center gap-3 mb-4">
 
-                  <div className="text-4xl">
-                    💳
-                  </div>
+                  <CreditCard className="w-10 h-10" />
 
                   <div>
 
