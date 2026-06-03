@@ -412,7 +412,7 @@ export default function Payment() {
   256-bit SSL encrypted payment powered by Razorpay
 </p>
 
-</div>
+
 </div>
 </div>
 </motion.div>
