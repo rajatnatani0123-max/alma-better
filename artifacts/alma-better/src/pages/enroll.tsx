@@ -44,22 +44,18 @@ export default function Enroll() {
     defaultValues: { name: "", email: "", phone: "", course: "" },
   });
 
-  function onCourseSelect(course: string) {
-    setSelectedCourse(course);
-    form.setValue("course", course);
-  }
-
   
+function onCourseSelect(course: string) {
+  setSelectedCourse(course);
+  form.setValue("course", course);
+}
+
 function onSubmit(values: FormValues) {
 
   const enrollmentData = {
-
     name: values.name,
-
     email: values.email,
-
     phone: values.phone,
-
     course: selectedCourse,
   };
 
@@ -70,9 +66,8 @@ function onSubmit(values: FormValues) {
 
   setLocation("/payment/test");
 }
-      }
-    )
-  }
+   
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
