@@ -24,6 +24,9 @@ export default function Payment() {
 
   const [showOtp, setShowOtp] = useState(false);
 
+  const [processing, setProcessing] =
+    useState(false);
+
   const [paid, setPaid] = useState(false);
 
   const amount = 84549;
@@ -43,6 +46,7 @@ export default function Payment() {
   function sendOtp() {
     if (phone.length < 10) {
       alert("Enter valid mobile number");
+
       return;
     }
 
@@ -51,7 +55,13 @@ export default function Payment() {
 
   function verifyOtp() {
     if (otp.length === 6) {
-      setPaid(true);
+      setProcessing(true);
+
+      setTimeout(() => {
+        setProcessing(false);
+
+        setPaid(true);
+      }, 3500);
     } else {
       alert("Enter valid OTP");
     }
@@ -68,9 +78,44 @@ export default function Payment() {
 
     const pdf = new jsPDF();
 
-    pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
+    pdf.addImage(
+      imgData,
+      "PNG",
+      0,
+      0,
+      210,
+      297
+    );
 
     pdf.save("payment-receipt.pdf");
+  }
+
+  // PROCESSING SCREEN
+  if (processing) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] px-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-white rounded-3xl shadow-xl p-10 w-full max-w-md text-center"
+        >
+          <div className="w-20 h-20 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+
+          <h1 className="text-3xl font-bold text-[#111827] mb-3">
+            Processing Payment
+          </h1>
+
+          <p className="text-gray-500">
+            Please wait while we securely
+            process your payment...
+          </p>
+
+          <div className="mt-6 bg-gray-100 rounded-full h-3 overflow-hidden">
+            <div className="bg-orange-500 h-full animate-pulse w-full"></div>
+          </div>
+        </motion.div>
+      </div>
+    );
   }
 
   // SUCCESS PAGE
@@ -96,7 +141,8 @@ export default function Payment() {
               </h1>
 
               <p className="text-gray-500">
-                Transaction Completed Successfully
+                Transaction Completed
+                Successfully
               </p>
             </div>
 
@@ -113,8 +159,8 @@ export default function Payment() {
                 <span>Course</span>
 
                 <span className="font-semibold text-right max-w-[60%]">
-                  AlmaBetter Placement Guarantee
-                  Program
+                  AlmaBetter Placement
+                  Guarantee Program
                 </span>
               </div>
 
@@ -125,7 +171,9 @@ export default function Payment() {
               </div>
 
               <div className="flex justify-between text-green-700">
-                <span>Yes Bank Discount</span>
+                <span>
+                  Yes Bank Discount
+                </span>
 
                 <span>- ₹4,450</span>
               </div>
@@ -135,7 +183,9 @@ export default function Payment() {
 
                 <span>
                   ₹
-                  {amount.toLocaleString("en-IN")}
+                  {amount.toLocaleString(
+                    "en-IN"
+                  )}
                 </span>
               </div>
             </div>
@@ -144,7 +194,9 @@ export default function Payment() {
               <div className="flex justify-between">
                 <span>Transaction ID</span>
 
-                <span>{transactionId}</span>
+                <span>
+                  {transactionId}
+                </span>
               </div>
 
               <div className="flex justify-between">
@@ -185,17 +237,20 @@ export default function Payment() {
 
               <ul className="list-disc pl-5 text-sm text-gray-600 space-y-2">
                 <li>
-                  Placement guarantee applicable
-                  after successful course completion.
+                  Placement guarantee
+                  applicable after successful
+                  course completion.
                 </li>
 
                 <li>
                   Student must complete all
-                  assignments and assessments.
+                  assignments and
+                  assessments.
                 </li>
 
                 <li>
-                  Attendance criteria mandatory.
+                  Attendance criteria
+                  mandatory.
                 </li>
 
                 <li>
@@ -204,7 +259,8 @@ export default function Payment() {
                 </li>
 
                 <li>
-                  Refund subject to company policy.
+                  Refund subject to company
+                  policy.
                 </li>
               </ul>
             </div>
@@ -265,7 +321,7 @@ export default function Payment() {
     );
   }
 
-  // MAIN PAYMENT PAGE
+  // MAIN PAGE
   return (
     <div className="min-h-screen bg-[#f5f5f5]">
       <nav className="sticky top-0 z-50 w-full bg-white border-b">
@@ -305,7 +361,9 @@ export default function Payment() {
             </div>
 
             <div className="flex justify-between text-green-700 mb-2">
-              <span>Yes Bank Discount</span>
+              <span>
+                Yes Bank Discount
+              </span>
 
               <span>- ₹4,450</span>
             </div>
@@ -315,7 +373,9 @@ export default function Payment() {
 
               <span>
                 ₹
-                {amount.toLocaleString("en-IN")}
+                {amount.toLocaleString(
+                  "en-IN"
+                )}
               </span>
             </div>
           </div>
@@ -334,14 +394,17 @@ export default function Payment() {
             className="w-full h-14 text-lg rounded-2xl bg-orange-500 hover:bg-orange-600"
           >
             Pay ₹
-            {amount.toLocaleString("en-IN")}
+            {amount.toLocaleString(
+              "en-IN"
+            )}
           </Button>
 
           <div className="flex items-center justify-center gap-2 mt-6 text-sm text-green-700">
             <ShieldCheck className="w-4 h-4" />
 
             <span>
-              256-bit SSL encrypted payment
+              256-bit SSL encrypted
+              payment
             </span>
           </div>
         </motion.div>
