@@ -367,7 +367,7 @@ export default function Payment() {
                     />
                   </div>
 
-                  ```tsx id="w8qf1x"
+                  
 <div className="space-y-4">
 
   <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
@@ -412,13 +412,9 @@ export default function Payment() {
   256-bit SSL encrypted payment powered by Razorpay
 </p>
 
-
-</div>
 </div>
 </motion.div>
 </div>
 </div>
 );
 }
-
-
