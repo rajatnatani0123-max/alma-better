@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { motion } from "framer-motion";
 
 import {
@@ -127,7 +126,7 @@ export default function Payment() {
 
   }
 
-  // PROCESSING SCREEN
+  // PROCESSING
   if (processing) {
 
     return (
@@ -355,7 +354,7 @@ export default function Payment() {
 
   }
 
-  // OTP SCREEN
+  // OTP PAGE
   if (showOtp) {
 
     return (
@@ -526,7 +525,7 @@ export default function Payment() {
 
                   <img
                     src={hdfc}
-                    className="h-7 w-auto object-contain"
+                    className="h-5 w-auto object-contain"
                   />
 
                   <div>
@@ -548,7 +547,7 @@ export default function Payment() {
 
                   <img
                     src={icici}
-                    className="h-7 w-auto object-contain"
+                    className="h-4 w-auto object-contain"
                   />
 
                   <div>
@@ -607,7 +606,6 @@ export default function Payment() {
             {/* PAYMENT TABS */}
             <div className="grid grid-cols-4 gap-3 mb-6">
 
-              {/* CARD */}
               <button
                 onClick={() =>
                   setPaymentMethod("cards")
@@ -627,7 +625,6 @@ export default function Payment() {
 
               </button>
 
-              {/* UPI */}
               <button
                 onClick={() =>
                   setPaymentMethod("upi")
@@ -650,7 +647,6 @@ export default function Payment() {
 
               </button>
 
-              {/* CRED */}
               <button
                 onClick={() =>
                   setPaymentMethod("cred")
@@ -670,7 +666,6 @@ export default function Payment() {
 
               </button>
 
-              {/* BANKING */}
               <button
                 onClick={() =>
                   setPaymentMethod("banking")
@@ -691,96 +686,6 @@ export default function Payment() {
               </button>
 
             </div>
-
-            {/* UPI SECTION */}
-            {paymentMethod === "upi" && (
-
-              <div className="space-y-4 mb-6">
-
-                <div className="border rounded-2xl p-4 flex items-center justify-between">
-                  <span>Google Pay</span>
-                  <div className="w-5"></div>
-                </div>
-
-                <div className="border rounded-2xl p-4 flex items-center justify-between">
-                  <span>PhonePe</span>
-                  <div className="w-5"></div>
-                </div>
-
-                <div className="border rounded-2xl p-4 flex items-center justify-between">
-                  <span>Paytm</span>
-                  <div className="w-5"></div>
-                </div>
-
-                <Button
-                  onClick={payNow}
-                  className="w-full h-14 rounded-2xl bg-orange-500"
-                >
-                  Pay via UPI
-                </Button>
-
-              </div>
-
-            )}
-
-            {/* CRED SECTION */}
-            {paymentMethod === "cred" && (
-
-              <div className="border rounded-3xl p-6 mb-6">
-
-                <div className="flex items-center gap-3 mb-4">
-
-                  <CreditCard className="w-10 h-10" />
-
-                  <div>
-
-                    <p className="font-bold">
-                      Pay using CRED
-                    </p>
-
-                    <p className="text-sm text-gray-500">
-                      Earn rewards & cashback
-                    </p>
-
-                  </div>
-
-                </div>
-
-                <Button
-                  onClick={payNow}
-                  className="w-full h-14 rounded-2xl bg-black hover:bg-gray-900"
-                >
-                  Continue with CRED
-                </Button>
-
-              </div>
-
-            )}
-
-            {/* BANKING */}
-            {paymentMethod === "banking" && (
-
-              <div className="grid grid-cols-2 gap-3 mb-6">
-
-                <button className="border rounded-2xl p-4">
-                  HDFC Bank
-                </button>
-
-                <button className="border rounded-2xl p-4">
-                  ICICI Bank
-                </button>
-
-                <button className="border rounded-2xl p-4">
-                  SBI Bank
-                </button>
-
-                <button className="border rounded-2xl p-4">
-                  Axis Bank
-                </button>
-
-              </div>
-
-            )}
 
             {/* CARD FORM */}
             {paymentMethod === "cards" && (
@@ -920,16 +825,6 @@ export default function Payment() {
               </div>
 
             )}
-
-            <div className="flex items-center justify-center gap-2 mt-5 text-sm text-green-700">
-
-              <ShieldCheck className="w-4 h-4" />
-
-              <span>
-                256-bit SSL encrypted payment
-              </span>
-
-            </div>
 
           </div>
 
