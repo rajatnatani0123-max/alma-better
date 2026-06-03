@@ -69,7 +69,7 @@ function onSubmit(values: FormValues) {
   );
 
   setLocation("/payment/test");
-},
+}
       }
     );
   }
