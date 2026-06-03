@@ -50,7 +50,8 @@ export default function Payment() {
 
       name: "AlmaBetter",
 
-      description: enrollment.course,
+      description: "Full Course Enrollment Payment",
+      image: "https://almabetter.com/favicon.ico",
 
       handler: function () {
         setPaid(true);
