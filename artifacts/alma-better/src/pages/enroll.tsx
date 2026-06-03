@@ -49,7 +49,7 @@ export default function Enroll() {
     form.setValue("course", course);
   }
 
-  ```tsx id="u2m8q9"
+  
 function onSubmit(values: FormValues) {
 
   const enrollmentData = {
